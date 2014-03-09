@@ -1,0 +1,11 @@
+{
+    "name": "lottery-number-generator",
+    "version": "0.0.1",
+    "private": true,
+    "scripts": {
+        "start": "node lottery.js"
+    },
+    "dependencies": {
+        "mongoose": "*"
+    }
+}
