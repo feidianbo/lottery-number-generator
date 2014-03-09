@@ -73,41 +73,47 @@ var set = exports.set = function (awards, count) {
 
 ///生成抽奖号码文件
 exports.file = function (file, sort, awards) {
-    if (!file) {
-        file = 'data\\lottery_numbers.txt';
-    } else {
-        file = 'data\\' + file;
-    }
     var fs = require('fs');
-    var content = '抽奖号码如下：\r\n';
-    Lottery.Lottery.
-        find().
-        sort(sort).
-        exec(function (err, lottories) {
-            if (err) {
-                console.log(err);
-            } else {
-                console.log('需要生成包含有 ' + lottories.length + ' 个抽奖号码的文件');
-                for (var i = 0; i < lottories.length; i++) {
-                    content = content +
-                        lottories[i].number + '[' +
-                        (lottories[i].index < 10 ? ('000' + lottories[i].index.toString()) : (
-                            lottories[i].index < 100 ? ('00' + lottories[i].index.toString()) : (
-                                lottories[i].index < 1000 ? ('0' + lottories[i].index.toString()) : lottories[i].index))) + ']';
-                    if (awards) {
-                        content = content + '[' + lottories[i].awards + ']';
-                    }
-                    content = content + '\r\n';
-                }
+    var path = 'data';
 
-                fs.writeFile(file, content, function (err) {
-                    if (err) {
-                        console.log('生成抽奖号码文件时失败');
-                    } else {
-                        console.log('抽奖号码保存完成，参见文件：' + fs.realpathSync('.').toLowerCase() + '\\' + file);
-                    }
-                });
+    if (!fs.exists(path)) {
+        fs.mkdir(path, function (err) {
+            if (!file) {
+                file = 'lottery_numbers.txt';
             }
-        }
-    );
+            file = path + '\\' + file;
+
+            var content = '抽奖号码如下：\r\n';
+            Lottery.Lottery.
+                find().
+                sort(sort).
+                exec(function (err, lottories) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        console.log('需要生成包含有 ' + lottories.length + ' 个抽奖号码的文件');
+                        for (var i = 0; i < lottories.length; i++) {
+                            content = content +
+                                lottories[i].number + '[' +
+                                (lottories[i].index < 10 ? ('000' + lottories[i].index.toString()) : (
+                                    lottories[i].index < 100 ? ('00' + lottories[i].index.toString()) : (
+                                        lottories[i].index < 1000 ? ('0' + lottories[i].index.toString()) : lottories[i].index))) + ']';
+                            if (awards) {
+                                content = content + '[' + lottories[i].awards + ']';
+                            }
+                            content = content + '\r\n';
+                        }
+
+                        fs.writeFile(file, content, function (err) {
+                            if (err) {
+                                console.log('生成抽奖号码文件时失败，' + err);
+                            } else {
+                                console.log('抽奖号码保存完成，参见文件：' + fs.realpathSync('.').toLowerCase() + '\\' + file);
+                            }
+                        });
+                    }
+                }
+            );
+        });
+    }
 }
