@@ -16,7 +16,7 @@ var gen = require('./generator');
 //gen.set('100', 100);
 
 ///生成号码数据文件
-//gen.file();
+gen.file();
 //gen.file('lottery_number_by_index.txt');
 //gen.file('lottery_number_by_number.txt','number');
 //gen.file('lottery_number_by_number-awards.txt','-awards', 1);

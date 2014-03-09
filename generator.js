@@ -81,7 +81,7 @@ exports.file = function (file, sort, awards) {
             if (!file) {
                 file = 'lottery_numbers.txt';
             }
-            file = path + '\\' + file;
+            file = fs.realpathSync('.') + '/' + path + '/' + file;
 
             var content = '抽奖号码如下：\r\n';
             Lottery.Lottery.
@@ -108,7 +108,7 @@ exports.file = function (file, sort, awards) {
                             if (err) {
                                 console.log('生成抽奖号码文件时失败，' + err);
                             } else {
-                                console.log('抽奖号码保存完成，参见文件：' + fs.realpathSync('.').toLowerCase() + '\\' + file);
+                                console.log('抽奖号码保存完成，参见文件：' + file);
                             }
                         });
                     }
